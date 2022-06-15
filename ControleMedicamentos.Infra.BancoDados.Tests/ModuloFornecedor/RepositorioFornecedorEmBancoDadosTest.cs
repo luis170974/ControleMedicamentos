@@ -31,11 +31,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
             var fornecedorEncontrado = repositorio.SelecionarUnico(fornecedor.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
-            Assert.AreEqual(fornecedor.Id, fornecedorEncontrado.Id);
-            Assert.AreEqual(fornecedor.Nome, fornecedorEncontrado.Nome);
-            Assert.AreEqual(fornecedor.Telefone, fornecedorEncontrado.Telefone);
-            Assert.AreEqual(fornecedor.Cidade, fornecedorEncontrado.Cidade);
-            Assert.AreEqual(fornecedor.Estado, fornecedorEncontrado.Estado);
+            Assert.AreEqual(fornecedor, fornecedorEncontrado);
+
 
            
         }
@@ -57,11 +54,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
             var fornecedorEncontrado = repositorio.SelecionarUnico(fornecedor.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
-            Assert.AreEqual(fornecedor.Id, fornecedorEncontrado.Id);
-            Assert.AreEqual(fornecedor.Nome, fornecedorEncontrado.Nome);
-            Assert.AreEqual(fornecedor.Telefone, fornecedorEncontrado.Telefone);
-            Assert.AreEqual(fornecedor.Cidade, fornecedorEncontrado.Cidade);
-            Assert.AreEqual(fornecedor.Estado, fornecedorEncontrado.Estado);
+            Assert.AreEqual(fornecedor, fornecedorEncontrado);
+
         }
 
         [TestMethod]
@@ -107,11 +101,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
             var fornecedorEncontrado = repositorio.SelecionarUnico(fornecedor.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
-            Assert.AreEqual(fornecedor.Id, fornecedorEncontrado.Id);
-            Assert.AreEqual(fornecedor.Nome, fornecedorEncontrado.Nome);
-            Assert.AreEqual(fornecedor.Telefone, fornecedorEncontrado.Telefone);
-            Assert.AreEqual(fornecedor.Cidade, fornecedorEncontrado.Cidade);
-            Assert.AreEqual(fornecedor.Estado, fornecedorEncontrado.Estado);
+            Assert.AreEqual(fornecedor, fornecedorEncontrado);
+
         }
     }
 }

@@ -22,10 +22,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFuncionario
             Funcionario fornecedorEncontrado = repositorio.SelecionarUnico(funcionario.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
-            Assert.AreEqual(funcionario.Id, fornecedorEncontrado.Id);
-            Assert.AreEqual(funcionario.Nome, fornecedorEncontrado.Nome);
-            Assert.AreEqual(funcionario.Login, fornecedorEncontrado.Login);
-            Assert.AreEqual(funcionario.Senha, fornecedorEncontrado.Senha);
+            Assert.AreEqual(funcionario, fornecedorEncontrado);
+
 
         }
 
@@ -45,11 +43,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFuncionario
             Funcionario funcionarioEncontrado = repositorio.SelecionarUnico(funcionario.Id);
 
             Assert.IsNotNull(funcionarioEncontrado);
-            Assert.AreEqual(funcionario.Id, funcionarioEncontrado.Id);
-            Assert.AreEqual(funcionario.Nome, funcionarioEncontrado.Nome);
-            Assert.AreEqual(funcionario.Login, funcionarioEncontrado.Login);
-            Assert.AreEqual(funcionario.Senha, funcionarioEncontrado.Senha);
-            
+            Assert.AreEqual(funcionario, funcionarioEncontrado);
+
         }
 
         [TestMethod]
@@ -89,10 +84,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFuncionario
             Funcionario funcionarioEncontrado = repositorio.SelecionarUnico(funcionario.Id);
 
             Assert.IsNotNull(funcionarioEncontrado);
-            Assert.AreEqual(funcionario.Id, funcionarioEncontrado.Id);
-            Assert.AreEqual(funcionario.Nome, funcionarioEncontrado.Nome);
-            Assert.AreEqual(funcionario.Login, funcionarioEncontrado.Login);
-            Assert.AreEqual(funcionario.Senha, funcionarioEncontrado.Senha);
+            Assert.AreEqual(funcionario, funcionarioEncontrado);
+
         }
     }
 }

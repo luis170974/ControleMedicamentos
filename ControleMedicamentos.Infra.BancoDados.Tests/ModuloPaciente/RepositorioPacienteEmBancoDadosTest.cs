@@ -23,9 +23,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloPaciente
             Paciente pacienteEncontrado = repositorio.SelecionarUnico(paciente.Id);
 
             Assert.IsNotNull(pacienteEncontrado);
-            Assert.AreEqual(paciente.Id, pacienteEncontrado.Id);
-            Assert.AreEqual(paciente.Nome, pacienteEncontrado.Nome);
-            Assert.AreEqual(paciente.CartaoSUS, pacienteEncontrado.CartaoSUS);
+            Assert.AreEqual(paciente, pacienteEncontrado);
+
 
         }
 
@@ -44,9 +43,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloPaciente
             Paciente pacienteEncontrado = repositorio.SelecionarUnico(paciente.Id);
 
             Assert.IsNotNull(pacienteEncontrado);
-            Assert.AreEqual(paciente.Id, pacienteEncontrado.Id);
-            Assert.AreEqual(paciente.Nome, pacienteEncontrado.Nome);
-            Assert.AreEqual(paciente.CartaoSUS, pacienteEncontrado.CartaoSUS);
+            Assert.AreEqual(paciente, pacienteEncontrado);
+
 
         }
 
@@ -88,9 +86,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloPaciente
             Paciente pacienteEncontrado = repositorio.SelecionarUnico(paciente.Id);
 
             Assert.IsNotNull(pacienteEncontrado);
-            Assert.AreEqual(paciente.Id, pacienteEncontrado.Id);
-            Assert.AreEqual(paciente.Nome, pacienteEncontrado.Nome);
-            Assert.AreEqual(paciente.CartaoSUS, pacienteEncontrado.CartaoSUS);
+            Assert.AreEqual(paciente, pacienteEncontrado);
+
 
         }
 

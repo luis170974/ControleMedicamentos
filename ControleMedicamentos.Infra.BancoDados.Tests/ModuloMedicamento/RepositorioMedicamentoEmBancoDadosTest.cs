@@ -31,12 +31,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloMedicamento
             Medicamento medicamentoEncontrado = repositorio.SelecionarUnico(medicamento.Id);
 
             Assert.IsNotNull(medicamentoEncontrado);
-            Assert.AreEqual(medicamento.Id, medicamentoEncontrado.Id);
-            Assert.AreEqual(medicamento.Nome, medicamentoEncontrado.Nome);
-            Assert.AreEqual(medicamento.Descricao, medicamentoEncontrado.Descricao);
-            Assert.AreEqual(medicamento.Lote, medicamentoEncontrado.Lote);
-            Assert.AreEqual(medicamento.Validade, medicamentoEncontrado.Validade);
-            Assert.AreEqual(medicamento.Fornecedor, medicamentoEncontrado.Fornecedor);
+            Assert.AreEqual(medicamento, medicamentoEncontrado);
+
 
 
 
@@ -65,12 +61,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloMedicamento
             Medicamento medicamentoEncontrado = repositorio.SelecionarUnico(medicamento.Id);
 
             Assert.IsNotNull(medicamentoEncontrado);
-            Assert.AreEqual(medicamento.Id, medicamentoEncontrado.Id);
-            Assert.AreEqual(medicamento.Nome, medicamentoEncontrado.Nome);
-            Assert.AreEqual(medicamento.Descricao, medicamentoEncontrado.Descricao);
-            Assert.AreEqual(medicamento.Lote, medicamentoEncontrado.Lote);
-            Assert.AreEqual(medicamento.Validade, medicamentoEncontrado.Validade);
-            Assert.AreEqual(medicamento.Fornecedor, medicamentoEncontrado.Fornecedor);
+            Assert.AreEqual(medicamento, medicamentoEncontrado);
+
                    
         }
 
@@ -122,11 +114,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloMedicamento
             Medicamento medicamentoEncontrado = repositorio.SelecionarUnico(medicamento.Id);
 
             Assert.IsNotNull(medicamentoEncontrado);
-            Assert.AreEqual(medicamento.Id, medicamentoEncontrado.Id);
-            Assert.AreEqual(medicamento.Nome, medicamentoEncontrado.Nome);
-            Assert.AreEqual(medicamento.Descricao, medicamentoEncontrado.Descricao);
-            Assert.AreEqual(medicamento.Lote, medicamentoEncontrado.Lote);
-            Assert.AreEqual(medicamento.Validade, medicamentoEncontrado.Validade);
+            Assert.AreEqual(medicamento, medicamentoEncontrado);
+
         }
 
 
