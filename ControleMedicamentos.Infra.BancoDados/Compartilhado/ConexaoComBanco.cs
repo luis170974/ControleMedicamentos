@@ -34,7 +34,6 @@ namespace ControleMedicamentos.Infra.BancoDados.Compartilhado
         protected abstract void EditarRegistroBancoDados(T entidade);
         protected abstract void ExcluirRegistroBancoDados(T entidade);
         protected abstract void DefinirParametros(T entidade, SqlCommand cmd_Insercao);
-        protected abstract void DefinirParametros(T entidade, SqlCommand cmd_Insercao, int entidadeId);
         protected abstract ValidationResult Validar(T entidade);
         protected abstract List<T> LerTodos(SqlDataReader leitor);
         protected abstract T LerUnico(SqlDataReader leitor);

@@ -1,4 +1,5 @@
 using ControleMedicamentos.Dominio.ModuloPaciente;
+using ControleMedicamentos.Infra.BancoDados.Compartilhado;
 using ControleMedicamentos.Infra.BancoDados.ModuloPaciente;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,15 +13,17 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloPaciente
 
         public RepositorioPacienteEmBancoDadosTest()
         {
-            paciente = new Paciente("Leandro", "99983199302136");
+            Db.ExecutarSql("DELETE FROM TBPACIENTE; DBCC CHECKIDENT (TBPACIENTE, RESEED, 0)");
+            paciente = new Paciente("Leandro", "123456789012345");
             repositorio = new RepositorioPacienteEmBancoDados();
         }
 
         [TestMethod]
         public void Deve_inserir_paciente()
         {
+            repositorio.Inserir(paciente);
 
-            Paciente pacienteEncontrado = repositorio.SelecionarUnico(paciente.Id);
+            Paciente pacienteEncontrado = repositorio.SelecionarPorId(paciente.Id);
 
             Assert.IsNotNull(pacienteEncontrado);
             Assert.AreEqual(paciente, pacienteEncontrado);
@@ -31,16 +34,17 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloPaciente
         [TestMethod]
         public void Deve_editar_paciente()
         {
-
-            Paciente pacienteAtualizado = repositorio.SelecionarUnico(paciente.Id);
-
-            pacienteAtualizado.Nome = "Luis Kraus";
-            pacienteAtualizado.CartaoSUS = "99953199612136";
+            repositorio.Inserir(paciente);
 
 
-            repositorio.Editar(pacienteAtualizado);
+            paciente.Nome = "William Ludwig De Souza";
+            paciente.CartaoSUS = "123456789012345";
 
-            Paciente pacienteEncontrado = repositorio.SelecionarUnico(paciente.Id);
+
+
+            repositorio.Editar(paciente);
+
+            Paciente pacienteEncontrado = repositorio.SelecionarPorId(paciente.Id);
 
             Assert.IsNotNull(pacienteEncontrado);
             Assert.AreEqual(paciente, pacienteEncontrado);
@@ -51,39 +55,33 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloPaciente
         [TestMethod]
         public void Deve_excluir_paciente()
         {
+            repositorio.Inserir(paciente);
 
             repositorio.Excluir(paciente);
 
-            Assert.IsNull(paciente);
+            var pacienteEncontrado = repositorio.SelecionarPorId(paciente.Id);
+            Assert.IsNull(pacienteEncontrado);
         }
 
         [TestMethod]
         public void Deve_selecionar_todos_os_pacientes()
         {
+            repositorio.Inserir(paciente);
 
-            Paciente pacienteDois = new Paciente("Matheus Medeiros", "82953499415521");
 
-            repositorio.Inserir(pacienteDois);
-
-            Paciente pacienteTres = new Paciente("Ana Beatriz", "94123125656176");
-
-            repositorio.Inserir(pacienteTres);
 
             var pacientes = repositorio.SelecionarTodos();
 
-            Assert.AreEqual(3, pacientes.Count);
-
-            Assert.AreEqual("Leandro", pacientes[0].Nome);
-            Assert.AreEqual("Matheus Medeiros", pacientes[1].Nome);
-            Assert.AreEqual("Ana Beatriz", pacientes[2].Nome);
+            Assert.AreEqual(1, pacientes.Count);
         }
 
 
         [TestMethod]
         public void Deve_selecionar_um_pacientes()
         {
+            repositorio.Inserir(paciente);
 
-            Paciente pacienteEncontrado = repositorio.SelecionarUnico(paciente.Id);
+            Paciente pacienteEncontrado = repositorio.SelecionarPorId(paciente.Id);
 
             Assert.IsNotNull(pacienteEncontrado);
             Assert.AreEqual(paciente, pacienteEncontrado);

@@ -56,7 +56,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             return fornecedores;
         }
 
-        public Fornecedor SelecionarUnico(int numero)
+        public Fornecedor SelecionarPorId(int numero)
         {
             ConectarBancoDados();
 
@@ -96,7 +96,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                                 @EMAIL,
                                 @CIDADE,
                                 @ESTADO
-                           )";
+                           );SELECT SCOPE_IDENTITY();";
 
             SqlCommand cmd_Insercao = new(sql, conexao);
 
@@ -119,11 +119,11 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
 		                [ESTADO] = @ESTADO 
 
                    WHERE
-		                 ID = @ID;";
+		                 ID = @ID";
 
             SqlCommand cmd_Edicao = new(sql, conexao);
 
-            DefinirParametros(entidade, cmd_Edicao, entidade.Id);
+            DefinirParametros(entidade, cmd_Edicao);
 
             cmd_Edicao.ExecuteNonQuery();
 
@@ -145,20 +145,13 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
         }
         protected override void DefinirParametros(Fornecedor entidade, SqlCommand cmd)
         {
+            cmd.Parameters.AddWithValue("ID", entidade.Id);
             cmd.Parameters.AddWithValue("NOME", entidade.Nome);
             cmd.Parameters.AddWithValue("CIDADE", entidade.Cidade);
             cmd.Parameters.AddWithValue("ESTADO", entidade.Estado);
             cmd.Parameters.AddWithValue("EMAIL", entidade.Email);
             cmd.Parameters.AddWithValue("TELEFONE", entidade.Telefone);
-        }
-        protected override void DefinirParametros(Fornecedor entidade, SqlCommand cmd, int entidadeId)
-        {
-            cmd.Parameters.AddWithValue("NOME", entidade.Nome);
-            cmd.Parameters.AddWithValue("CIDADE", entidade.Cidade);
-            cmd.Parameters.AddWithValue("ESTADO", entidade.Estado);
-            cmd.Parameters.AddWithValue("EMAIL", entidade.Email);
-            cmd.Parameters.AddWithValue("TELEFONE", entidade.Telefone);
-            cmd.Parameters.AddWithValue("ID", entidadeId);
+
         }
         protected override ValidationResult Validar(Fornecedor entidade)
         {

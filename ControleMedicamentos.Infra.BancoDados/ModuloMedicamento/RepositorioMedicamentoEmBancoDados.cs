@@ -10,7 +10,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
 {
     public class RepositorioMedicamentoEmBancoDados : ConexaoBancoDados<Medicamento>, IRepositorio<Medicamento>
     {
-        RepositorioFornecedorEmBancoDados repoFornecedor;
+        RepositorioFornecedorEmBancoDados repositorioFornecedor;
 
         public ValidationResult Inserir(Medicamento entidade)
         {
@@ -54,7 +54,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                         M.[LOTE], 
                         M.[VALIDADE],
                         M.[QUANTIDADEDISPONIVEL],
-                        M.[FORNECEDOR_ID],
+                        M.[FORNECEDOR_ID]
 
                     FROM TBMEDICAMENTO AS M
                     INNER JOIN TBFORNECEDOR AS F
@@ -74,7 +74,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             return medicamentos;
         }
 
-        public Medicamento SelecionarUnico(int numero)
+        public Medicamento SelecionarPorId(int numero)
         {
             ConectarBancoDados();
 
@@ -86,14 +86,13 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                         M.[LOTE], 
                         M.[VALIDADE],
                         M.[QUANTIDADEDISPONIVEL],
-                        M.[FORNECEDOR_ID],
-						F.[NOME] AS [NOME_FORNECEDOR]
+                        M.[FORNECEDOR_ID]
 
                     FROM TBMEDICAMENTO AS M
                     INNER JOIN TBFORNECEDOR AS F
 
                         ON M.FORNECEDOR_ID = F.ID
-                        WHERE ID = @ID";
+                        WHERE M.ID = @ID";
 
             SqlCommand cmdSelecao = new(sql, conexao);
 
@@ -111,25 +110,17 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
         }
 
         #region metodos protected
+
         protected override void DefinirParametros(Medicamento entidade, SqlCommand cmd)
         {
-            cmd.Parameters.AddWithValue("NOME_MEDICAMENTO", entidade.Nome);
-            cmd.Parameters.AddWithValue("DESCRICAO", entidade.Descricao);
-            cmd.Parameters.AddWithValue("LOTE", entidade.Lote);
-            cmd.Parameters.AddWithValue("VALIDADE", entidade.Validade);
-            cmd.Parameters.AddWithValue("QTD", entidade.QuantidadeDisponivel);
-            cmd.Parameters.AddWithValue("FORNECEDOR_ID", entidade.Fornecedor.Id);
-        }
-
-        protected override void DefinirParametros(Medicamento entidade, SqlCommand cmd, int entidadeId)
-        {
-            cmd.Parameters.AddWithValue("NOME_MEDICAMENTO", entidade.Nome);
-            cmd.Parameters.AddWithValue("DESCRICAO", entidade.Descricao);
-            cmd.Parameters.AddWithValue("LOTE", entidade.Lote);
-            cmd.Parameters.AddWithValue("VALIDADE", entidade.Validade);
-            cmd.Parameters.AddWithValue("QTD", entidade.QuantidadeDisponivel);
-            cmd.Parameters.AddWithValue("FORNECEDOR_ID", entidade.Fornecedor.Id);
             cmd.Parameters.AddWithValue("ID", entidade.Id);
+            cmd.Parameters.AddWithValue("NOME", entidade.Nome);
+            cmd.Parameters.AddWithValue("DESCRICAO", entidade.Descricao);
+            cmd.Parameters.AddWithValue("LOTE", entidade.Lote);
+            cmd.Parameters.AddWithValue("VALIDADE", entidade.Validade);
+            cmd.Parameters.AddWithValue("QTD", entidade.QuantidadeDisponivel);
+            cmd.Parameters.AddWithValue("FORNECEDOR_ID", entidade.Fornecedor.Id);
+            
         }
 
         protected override void EditarRegistroBancoDados(Medicamento entidade)
@@ -146,11 +137,11 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                         [FORNECEDOR_ID] = @FORNECEDOR_ID
 
                    WHERE
-		                 ID = @ID;";
+		                 ID = @ID";
 
             SqlCommand cmd_Edicao = new(sql, conexao);
 
-            DefinirParametros(entidade, cmd_Edicao, entidade.Id);
+            DefinirParametros(entidade, cmd_Edicao);
 
             cmd_Edicao.ExecuteNonQuery();
 
@@ -194,13 +185,13 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                            )
                            VALUES
                            (
-                                @NOME_MEDICAMENTO,
+                                @NOME,
                                 @DESCRICAO,
                                 @LOTE,
                                 @VALIDADE,
                                 @QTD,
                                 @FORNECEDOR_ID
-                           )";
+                           );SELECT SCOPE_IDENTITY();";
 
             SqlCommand cmd_Insercao = new(sql, conexao);
 
@@ -218,7 +209,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             while (leitor.Read())
             {
                 int id = Convert.ToInt32(leitor["ID"]);
-                string nome = leitor["NOME_MEDICAMENTO"].ToString();
+                string nome = leitor["NOME"].ToString();
                 string descricao = leitor["DESCRICAO"].ToString();
                 string lote = leitor["LOTE"].ToString();
                 DateTime validade = Convert.ToDateTime(leitor["VALIDADE"]);
@@ -250,7 +241,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             if (leitor.Read())
             {
                 int id = Convert.ToInt32(leitor["ID"]);
-                string nome = leitor["NOME_MEDICAMENTO"].ToString();
+                string nome = leitor["NOME"].ToString();
                 string descricao = leitor["DESCRICAO"].ToString();
                 string lote = leitor["LOTE"].ToString();
                 DateTime validade = Convert.ToDateTime(leitor["VALIDADE"]);
@@ -282,19 +273,19 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
         #region metodos privados
         private void LerFornecedores(List<Medicamento> medicamentos)
         {
-            repoFornecedor = new();
+            repositorioFornecedor = new();
 
             foreach (Medicamento m in medicamentos)
             {
-                m.Fornecedor = repoFornecedor.SelecionarUnico(m.Fornecedor.Id);
+                m.Fornecedor = repositorioFornecedor.SelecionarPorId(m.Fornecedor.Id);
             }
         }
 
         private Fornecedor LerFornecedor(int numero)
         {
-            repoFornecedor = new();
+            repositorioFornecedor = new();
 
-            return repoFornecedor.SelecionarUnico(numero);
+            return repositorioFornecedor.SelecionarPorId(numero);
         }
 
         #endregion

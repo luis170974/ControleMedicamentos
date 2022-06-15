@@ -59,7 +59,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
             return pacientes;
         }
 
-        public Paciente SelecionarUnico(int numero)
+        public Paciente SelecionarPorId(int numero)
         {
             ConectarBancoDados();
 
@@ -79,17 +79,13 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
         }
 
         #region metodos protected
+
         protected override void DefinirParametros(Paciente entidade, SqlCommand cmd)
         {
-            cmd.Parameters.AddWithValue("NOME_PACIENTE", entidade.Nome);
-            cmd.Parameters.AddWithValue("CARTAOSUS", entidade.CartaoSUS);
-        }
-
-        protected override void DefinirParametros(Paciente entidade, SqlCommand cmd, int entidadeId)
-        {
-            cmd.Parameters.AddWithValue("NOME_PACIENTE", entidade.Nome);
-            cmd.Parameters.AddWithValue("CARTAOSUS", entidade.CartaoSUS);
             cmd.Parameters.AddWithValue("ID", entidade.Id);
+            cmd.Parameters.AddWithValue("NOME", entidade.Nome);
+            cmd.Parameters.AddWithValue("CARTAOSUS", entidade.CartaoSUS);
+
         }
 
         protected override void EditarRegistroBancoDados(Paciente entidade)
@@ -99,14 +95,14 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
             sql = @"UPDATE [TBPACIENTE] SET 
 
                         [NOME] = @NOME,    
-	                    [CARTAOSUS] = @LOGIN
+	                    [CARTAOSUS] = @CARTAOSUS
 
                    WHERE
-		                 ID = @ID;";
+		                 ID = @ID";
 
             SqlCommand cmd_Edicao = new(sql, conexao);
 
-            DefinirParametros(entidade, cmd_Edicao, entidade.Id);
+            DefinirParametros(entidade, cmd_Edicao);
 
             cmd_Edicao.ExecuteNonQuery();
 
@@ -139,9 +135,10 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
                            )
                            VALUES
                            (
-                                @NOME_PACIENTE,
+                                @NOME,
                                 @CARTAOSUS
-                           )";
+
+                           );SELECT SCOPE_IDENTITY();";
 
             SqlCommand cmd_Insercao = new(sql, conexao);
 
@@ -159,7 +156,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
             while (leitor.Read())
             {
                 int id = Convert.ToInt32(leitor["ID"]);
-                string nome = leitor["NOME_PACIENTE"].ToString();
+                string nome = leitor["NOME"].ToString();
                 string cartaoSus = leitor["CARTAOSUS"].ToString();
 
                 Paciente paciente = new Paciente(nome, cartaoSus)
@@ -180,7 +177,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloPaciente
             if (leitor.Read())
             {
                 int id = Convert.ToInt32(leitor["ID"]);
-                string nome = leitor["NOME_PACIENTE"].ToString();
+                string nome = leitor["NOME"].ToString();
                 string cartaoSus = leitor["CARTAOSUS"].ToString();
 
                 paciente = new Paciente(nome, cartaoSus)

@@ -1,5 +1,6 @@
 using ControleMedicamento.Infra.BancoDados.ModuloMedicamento;
 using ControleMedicamentos.Dominio.ModuloFornecedor;
+using ControleMedicamentos.Infra.BancoDados.Compartilhado;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
 
         public RepositorioFornecedorEmBancoDadosTest()
         {
-            fornecedor = new Fornecedor("Luis","49998319930","luishenriquekraus@hotmail.com","Otacilio Costa","Santa Catarina");
+            Db.ExecutarSql("DELETE FROM TBFORNECEDOR; DBCC CHECKIDENT (TBFORNECEDOR, RESEED, 0)");
+            fornecedor = new Fornecedor("Luis","49998319930","luishenriquekraus@hotmail.com","Otacilio Costa","SC");
             repositorio = new RepositorioFornecedorEmBancoDados();
         }
 
@@ -28,13 +30,13 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
         {
             repositorio.Inserir(fornecedor);
 
-            var fornecedorEncontrado = repositorio.SelecionarUnico(fornecedor.Id);
+            Fornecedor fornecedorEncontrado = repositorio.SelecionarPorId(fornecedor.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
             Assert.AreEqual(fornecedor, fornecedorEncontrado);
 
 
-           
+
         }
 
         [TestMethod]
@@ -42,30 +44,35 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
         {
             repositorio.Inserir(fornecedor);
 
-            Fornecedor fornecedorAtualizado = repositorio.SelecionarUnico(fornecedor.Id);
 
-            fornecedorAtualizado.Nome = "Luis Kraus";
-            fornecedorAtualizado.Telefone = "48998319930";
-            fornecedorAtualizado.Cidade = "Sao Paulo";
-            fornecedorAtualizado.Estado = "Sao Paulo";
+            fornecedor.Nome = "William Ludwig De Souza";
+            fornecedor.Telefone = "49998319930";
+            fornecedor.Email = "willudwig@hotmail.com";
+            fornecedor.Cidade = "Lages";
+            fornecedor.Estado = "SC";
 
-            repositorio.Editar(fornecedorAtualizado);
 
-            var fornecedorEncontrado = repositorio.SelecionarUnico(fornecedor.Id);
+            repositorio.Editar(fornecedor);
+
+            Fornecedor fornecedorEncontrado = repositorio.SelecionarPorId(fornecedor.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
             Assert.AreEqual(fornecedor, fornecedorEncontrado);
+
+
 
         }
 
         [TestMethod]
         public void Deve_excluir_fornecedor()
         {
+
             repositorio.Inserir(fornecedor);
 
             repositorio.Excluir(fornecedor);
 
-            Assert.IsNull(fornecedor);
+            var pacienteEncontrado = repositorio.SelecionarPorId(fornecedor.Id);
+            Assert.IsNull(pacienteEncontrado);
 
         }
 
@@ -74,21 +81,11 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
         {
             repositorio.Inserir(fornecedor);
 
-            Fornecedor fornecedorDois = new Fornecedor("Jonas", "49988317230", "jonas@hotmail.com", "Taio", "Santa Catarina");
 
-            repositorio.Inserir(fornecedorDois);
-
-            Fornecedor fornecedorTres = new Fornecedor("Pedro Xerife", "49983325210", "pedroxerife@hotmail.com", "Lages", "Santa Catarina");
-
-            repositorio.Inserir(fornecedorTres);
 
             var fornecedores = repositorio.SelecionarTodos();
 
-            Assert.AreEqual(3, fornecedores.Count);
-
-            Assert.AreEqual("Luis", fornecedores[0].Nome);
-            Assert.AreEqual("Joao", fornecedores[1].Nome);
-            Assert.AreEqual("Pedro", fornecedores[2].Nome);
+            Assert.AreEqual(1, fornecedores.Count);
 
 
         }
@@ -98,7 +95,8 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
         {
             repositorio.Inserir(fornecedor);
 
-            var fornecedorEncontrado = repositorio.SelecionarUnico(fornecedor.Id);
+
+            var fornecedorEncontrado = repositorio.SelecionarPorId(fornecedor.Id);
 
             Assert.IsNotNull(fornecedorEncontrado);
             Assert.AreEqual(fornecedor, fornecedorEncontrado);

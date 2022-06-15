@@ -18,17 +18,6 @@ namespace ControleMedicamentos.Dominio.Tests.ModuloFuncionario
             CultureInfo.CurrentUICulture = new CultureInfo("pt-BR");
         }
 
-        [TestMethod]
-        public void nome_funcionario_nao_pode_ser_nulo()
-        {
-            Funcionario funcionario = new(null, "luiskraus", "123");
-
-            var validador = new ValidadorFuncionario();
-
-            var resultado = validador.Validate(funcionario);
-
-            Assert.AreEqual("'Nome' não pode ser nulo", resultado.Errors[0].ErrorMessage);
-        }
 
         [TestMethod]
         public void nome_funcionario_nao_pode_ser_vazio()
@@ -42,17 +31,7 @@ namespace ControleMedicamentos.Dominio.Tests.ModuloFuncionario
             Assert.AreEqual("'Nome' não pode ser vazio", resultado.Errors[0].ErrorMessage);
         }
 
-        [TestMethod]
-        public void login_funcionario_nao_pode_ser_nulo()
-        {
-            Funcionario funcionario = new("Luis", null, "123");
 
-            var validador = new ValidadorFuncionario();
-
-            var resultado = validador.Validate(funcionario);
-
-            Assert.AreEqual("'Login' não pode ser nulo", resultado.Errors[0].ErrorMessage);
-        }
 
         [TestMethod]
         public void login_funcionario_nao_pode_ser_vazio()
@@ -67,17 +46,6 @@ namespace ControleMedicamentos.Dominio.Tests.ModuloFuncionario
         }
 
         [TestMethod]
-        public void senha_funcionario_nao_pode_ser_nulo()
-        {
-            Funcionario funcionario = new("Luis", "luiskraus", null);
-
-            var validador = new ValidadorFuncionario();
-
-            var resultado = validador.Validate(funcionario);
-
-            Assert.AreEqual("'Senha' não pode ser nulo", resultado.Errors[0].ErrorMessage);
-        }
-
         public void senha_funcionario_nao_pode_ser_vazio()
         {
             Funcionario funcionario = new("Luis", "luiskraus", "");

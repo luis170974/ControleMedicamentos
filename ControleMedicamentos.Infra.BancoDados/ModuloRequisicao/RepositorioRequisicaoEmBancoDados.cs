@@ -81,7 +81,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
             return requisicoes;
         }
 
-        public Requisicao SelecionarUnico(int numero)
+        public Requisicao SelecionarPorId(int numero)
         {
             ConectarBancoDados();
 
@@ -117,23 +117,17 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
         }
 
         #region metodos protected
+
+
         protected override void DefinirParametros(Requisicao entidade, SqlCommand cmd)
         {
-            cmd.Parameters.AddWithValue("FUNCIONARIO_ID", entidade.Funcionario.Id);
-            cmd.Parameters.AddWithValue("PACIENTE_ID", entidade.Paciente.Id);
-            cmd.Parameters.AddWithValue("MEDICAMENTO_ID", entidade.Medicamento.Id);
-            cmd.Parameters.AddWithValue("QUANTIDADEMEDICAMENTO", entidade.QtdMedicamento);
-            cmd.Parameters.AddWithValue("DATA", entidade.Data);
-        }
-
-        protected override void DefinirParametros(Requisicao entidade, SqlCommand cmd, int entidadeId)
-        {
-            cmd.Parameters.AddWithValue("FUNCIONARIO_ID", entidade.Funcionario.Id);
-            cmd.Parameters.AddWithValue("PACIENTE_ID", entidade.Paciente.Id);
-            cmd.Parameters.AddWithValue("MEDICAMENTO_ID", entidade.Medicamento.Id);
-            cmd.Parameters.AddWithValue("QUANTIDADEMEDICAMENTO", entidade.QtdMedicamento);
-            cmd.Parameters.AddWithValue("DATA", entidade.Data);
             cmd.Parameters.AddWithValue("ID", entidade.Id);
+            cmd.Parameters.AddWithValue("FUNCIONARIO_ID", entidade.Funcionario.Id);
+            cmd.Parameters.AddWithValue("PACIENTE_ID", entidade.Paciente.Id);
+            cmd.Parameters.AddWithValue("MEDICAMENTO_ID", entidade.Medicamento.Id);
+            cmd.Parameters.AddWithValue("QUANTIDADEMEDICAMENTO", entidade.QtdMedicamento);
+            cmd.Parameters.AddWithValue("DATA", entidade.Data);
+
         }
 
         protected override void EditarRegistroBancoDados(Requisicao entidade)
@@ -153,7 +147,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 
             SqlCommand cmd_Edicao = new(sql, conexao);
 
-            DefinirParametros(entidade, cmd_Edicao, entidade.Id);
+            DefinirParametros(entidade, cmd_Edicao);
 
             cmd_Edicao.ExecuteNonQuery();
 
@@ -305,9 +299,9 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 
             foreach (Requisicao r in requisicoes)
             {
-                r.Funcionario = repoFuncionario.SelecionarUnico(r.Funcionario.Id);
-                r.Paciente = repoPaciente.SelecionarUnico(r.Paciente.Id);
-                r.Medicamento = repoMedicamento.SelecionarUnico(r.Medicamento.Id);
+                r.Funcionario = repoFuncionario.SelecionarPorId(r.Funcionario.Id);
+                r.Paciente = repoPaciente.SelecionarPorId(r.Paciente.Id);
+                r.Medicamento = repoMedicamento.SelecionarPorId(r.Medicamento.Id);
             }
         }
 
@@ -317,9 +311,9 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
             repoPaciente = new();
             repoMedicamento = new();
 
-            req.Funcionario = repoFuncionario.SelecionarUnico(numFuncionario);
-            req.Paciente = repoPaciente.SelecionarUnico(numPaciente);
-            req.Medicamento = repoMedicamento.SelecionarUnico(numMedicamento);
+            req.Funcionario = repoFuncionario.SelecionarPorId(numFuncionario);
+            req.Paciente = repoPaciente.SelecionarPorId(numPaciente);
+            req.Medicamento = repoMedicamento.SelecionarPorId(numMedicamento);
         }
 
         #endregion

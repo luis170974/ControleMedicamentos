@@ -59,7 +59,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
             return funcionarios;
         }
 
-        public Funcionario SelecionarUnico(int numero)
+        public Funcionario SelecionarPorId(int numero)
         {
             ConectarBancoDados();
 
@@ -80,19 +80,15 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
 
 
         #region metodos protected
+
+
         protected override void DefinirParametros(Funcionario entidade, SqlCommand cmd)
         {
-            cmd.Parameters.AddWithValue("NOME", entidade.Nome);
-            cmd.Parameters.AddWithValue("LOGIN", entidade.Login);
-            cmd.Parameters.AddWithValue("SENHA", entidade.Senha);
-        }
-
-        protected override void DefinirParametros(Funcionario entidade, SqlCommand cmd, int entidadeId)
-        {
-            cmd.Parameters.AddWithValue("NOME", entidade.Nome);
-            cmd.Parameters.AddWithValue("LOGIN", entidade.Login);
-            cmd.Parameters.AddWithValue("SENHA", entidade.Senha);
             cmd.Parameters.AddWithValue("ID", entidade.Id);
+            cmd.Parameters.AddWithValue("NOME", entidade.Nome);
+            cmd.Parameters.AddWithValue("LOGIN", entidade.Login);
+            cmd.Parameters.AddWithValue("SENHA", entidade.Senha);
+            
         }
 
         protected override void EditarRegistroBancoDados(Funcionario entidade)
@@ -106,11 +102,11 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
                         [SENHA] = @SENHA  
 
                    WHERE
-		                 ID = @ID;";
+		                 ID = @ID";
 
             SqlCommand cmd_Edicao = new(sql, conexao);
 
-            DefinirParametros(entidade, cmd_Edicao, entidade.Id);
+            DefinirParametros(entidade, cmd_Edicao);
 
             cmd_Edicao.ExecuteNonQuery();
 
@@ -147,7 +143,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloFuncionario
                                 @NOME,
                                 @LOGIN,
                                 @SENHA
-                           )";
+                           );SELECT SCOPE_IDENTITY();";
 
             SqlCommand cmd_Insercao = new(sql, conexao);
 

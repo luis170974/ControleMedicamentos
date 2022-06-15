@@ -11,6 +11,6 @@ namespace ControleMedicamentos.Infra.BancoDados.Compartilhado
         ValidationResult Editar(T entidade);
         ValidationResult Excluir(T entidade);
         List<T> SelecionarTodos();
-        T SelecionarUnico(int numero);
+        T SelecionarPorId(int numero);
     }
 }
