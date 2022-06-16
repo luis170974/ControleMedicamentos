@@ -197,7 +197,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
 
             DefinirParametros(entidade, cmd_Insercao);
 
-            entidade.Id = Convert.ToInt32(cmd_Insercao.ExecuteScalar());
+            cmd_Insercao.ExecuteNonQuery();
 
             DesconectarBancoDados();
         }

@@ -13,9 +13,9 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 {
     public class RepositorioRequisicaoEmBancoDados : ConexaoBancoDados<Requisicao>, IRepositorio<Requisicao>
     {
-        RepositorioFuncionarioEmBancoDados repoFuncionario;
-        RepositorioPacienteEmBancoDados repoPaciente;
-        RepositorioMedicamentoEmBancoDados repoMedicamento;
+        RepositorioFuncionarioEmBancoDados repositorioFuncionario;
+        RepositorioPacienteEmBancoDados repositorioPaciente;
+        RepositorioMedicamentoEmBancoDados repositorioMedicamento;
 
         public ValidationResult Inserir(Requisicao entidade)
         {
@@ -52,7 +52,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
             ConectarBancoDados();
 
             sql = @"SELECT  
-
+                        R.[ID],
 						R.[FUNCIONARIO_ID],
                         R.[PACIENTE_ID],
                         R.[MEDICAMENTO_ID],
@@ -66,7 +66,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 
                         INNER JOIN TBFUNCIONARIO  AS F ON R.FUNCIONARIO_ID = F.ID
                         INNER JOIN TBPACIENTE    AS P ON R.PACIENTE_ID    = P.ID
-                        INNER JOIN TBMEDICAMENTO AS M ON R.MEDICAMENTO_ID = M.ID;";
+                        INNER JOIN TBMEDICAMENTO AS M ON R.MEDICAMENTO_ID = M.ID";
 
             SqlCommand cmd_Selecao = new(sql, conexao);
 
@@ -86,7 +86,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
             ConectarBancoDados();
 
             sql = @"SELECT  
-
+                        R.[ID],
                         R.[FUNCIONARIO_ID],
                         R.[PACIENTE_ID],
                         R.[MEDICAMENTO_ID],
@@ -99,7 +99,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
                         INNER JOIN TBPACIENTE    AS P ON R.PACIENTE_ID = P.ID
                         INNER JOIN TBMEDICAMENTO AS M ON R.MEDICAMENTO_ID = M.ID
 
-                    WHERE ID = @ID;";
+                    WHERE R.ID = @ID";
 
             SqlCommand cmdSelecao = new(sql, conexao);
 
@@ -143,7 +143,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
                         [DATA] = @DATA
 
                    WHERE
-		                 ID = @ID;";
+		                 ID = @ID";
 
             SqlCommand cmd_Edicao = new(sql, conexao);
 
@@ -201,7 +201,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 
             DefinirParametros(entidade, cmd_Insercao);
 
-            entidade.Id = Convert.ToInt32(cmd_Insercao.ExecuteScalar());
+            cmd_Insercao.ExecuteNonQuery();
 
             DesconectarBancoDados();
         }
@@ -249,7 +249,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
 
         protected override Requisicao LerUnico(SqlDataReader leitor)
         {
-            Requisicao medicamento = null;
+            Requisicao requisicao = null;
 
             if (leitor.Read())
             {
@@ -260,7 +260,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
                 int quantidadeMedicamento = Convert.ToInt32(leitor["QUANTIDADEMEDICAMENTO"]);
                 DateTime data = Convert.ToDateTime(leitor["DATA"]);
 
-                Requisicao requisicao = new Requisicao()
+                requisicao = new Requisicao()
                 {
                     Id = id,
                     Data = data,
@@ -283,7 +283,7 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
                 };
             }
 
-            return medicamento;
+            return requisicao;
         }
 
         protected override ValidationResult Validar(Requisicao entidade)
@@ -295,25 +295,28 @@ namespace ControleMedicamentos.Infra.BancoDados.ModuloRequisicao
         #region metodos privados
         private void LerFuncionariosPacientesMedicamentos(List<Requisicao> requisicoes)
         {
-            repoFuncionario = new();
+            repositorioFuncionario = new();
+            repositorioMedicamento = new();
+            repositorioPaciente = new();
 
             foreach (Requisicao r in requisicoes)
             {
-                r.Funcionario = repoFuncionario.SelecionarPorId(r.Funcionario.Id);
-                r.Paciente = repoPaciente.SelecionarPorId(r.Paciente.Id);
-                r.Medicamento = repoMedicamento.SelecionarPorId(r.Medicamento.Id);
+                r.Funcionario = repositorioFuncionario.SelecionarPorId(r.Funcionario.Id);
+                r.Paciente = repositorioPaciente.SelecionarPorId(r.Paciente.Id);
+                r.Medicamento = repositorioMedicamento.SelecionarPorId(r.Medicamento.Id);
+                
             }
         }
 
         private void Ler_Funcionario_Paciente_Medicamento(int numFuncionario, int numPaciente, int numMedicamento, ref Requisicao req)
         {
-            repoFuncionario = new();
-            repoPaciente = new();
-            repoMedicamento = new();
+            repositorioFuncionario = new();
+            repositorioPaciente = new();
+            repositorioMedicamento = new();
 
-            req.Funcionario = repoFuncionario.SelecionarPorId(numFuncionario);
-            req.Paciente = repoPaciente.SelecionarPorId(numPaciente);
-            req.Medicamento = repoMedicamento.SelecionarPorId(numMedicamento);
+            req.Funcionario = repositorioFuncionario.SelecionarPorId(numFuncionario);
+            req.Paciente = repositorioPaciente.SelecionarPorId(numPaciente);
+            req.Medicamento = repositorioMedicamento.SelecionarPorId(numMedicamento);
         }
 
         #endregion
