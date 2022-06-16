@@ -118,7 +118,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             cmd.Parameters.AddWithValue("DESCRICAO", entidade.Descricao);
             cmd.Parameters.AddWithValue("LOTE", entidade.Lote);
             cmd.Parameters.AddWithValue("VALIDADE", entidade.Validade);
-            cmd.Parameters.AddWithValue("QTD", entidade.QuantidadeDisponivel);
+            cmd.Parameters.AddWithValue("QUANTIDADEDISPONIVEL", entidade.QuantidadeDisponivel);
             cmd.Parameters.AddWithValue("FORNECEDOR_ID", entidade.Fornecedor.Id);
             
         }
@@ -130,10 +130,10 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
             sql = @"UPDATE [TBMEDICAMENTO] SET 
 
                         [NOME] = @NOME,    
-                        [DESCRICAO] @DESCRICAO,
+                        [DESCRICAO] = @DESCRICAO,
                         [LOTE] = @LOTE,
                         [VALIDADE] = @VALIDADE,
-                        [QUANTIDADEDISPONIVEL] = @QTD,
+                        [QUANTIDADEDISPONIVEL] = @QUANTIDADEDISPONIVEL,
                         [FORNECEDOR_ID] = @FORNECEDOR_ID
 
                    WHERE
@@ -189,7 +189,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                                 @DESCRICAO,
                                 @LOTE,
                                 @VALIDADE,
-                                @QTD,
+                                @QUANTIDADEDISPONIVEL,
                                 @FORNECEDOR_ID
                            );SELECT SCOPE_IDENTITY();";
 
@@ -213,7 +213,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                 string descricao = leitor["DESCRICAO"].ToString();
                 string lote = leitor["LOTE"].ToString();
                 DateTime validade = Convert.ToDateTime(leitor["VALIDADE"]);
-                int quantidadeDisponivel = Convert.ToInt32(leitor["QTD"]);
+                int quantidadeDisponivel = Convert.ToInt32(leitor["QUANTIDADEDISPONIVEL"]);
 
                 int fornecedorId = Convert.ToInt32(leitor["FORNECEDOR_ID"]);
 
@@ -245,7 +245,7 @@ namespace ControleMedicamento.Infra.BancoDados.ModuloMedicamento
                 string descricao = leitor["DESCRICAO"].ToString();
                 string lote = leitor["LOTE"].ToString();
                 DateTime validade = Convert.ToDateTime(leitor["VALIDADE"]);
-                int quantidadeDisponivel = Convert.ToInt32(leitor["QTD"]);
+                int quantidadeDisponivel = Convert.ToInt32(leitor["QUANTIDADEDISPONIVEL"]);
 
                 int fornecedorId = Convert.ToInt32(leitor["FORNECEDOR_ID"]);
 
