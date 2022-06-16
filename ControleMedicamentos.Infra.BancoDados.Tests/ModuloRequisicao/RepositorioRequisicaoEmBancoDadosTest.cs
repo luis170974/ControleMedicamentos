@@ -31,7 +31,7 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloRequisicao
         public RepositorioRequisicaoEmBancoDadosTest()
         {
 
-            SqlsDeletes();
+            SqlDelete();
 
             InstanciandoObjetos();
 
@@ -88,7 +88,7 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloRequisicao
             funcionario = new Funcionario("William Ludwig", "willudwig", "1234");
         }
 
-        private static void SqlsDeletes()
+        private static void SqlDelete()
         {
             Db.ExecutarSql("DELETE FROM TBREQUISICAO; DBCC CHECKIDENT (TBREQUISICAO, RESEED, 0)");
             Db.ExecutarSql("DELETE FROM TBMEDICAMENTO; DBCC CHECKIDENT (TBMEDICAMENTO, RESEED, 0)");
