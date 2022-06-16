@@ -12,9 +12,24 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFuncionario
         private RepositorioFuncionarioEmBancoDados repositorio;
         public RepositorioFuncionarioEmBancoDadosTest()
         {
-            Db.ExecutarSql("DELETE FROM TBFUNCIONARIO; DBCC CHECKIDENT (TBFUNCIONARIO, RESEED, 0)");
-            funcionario = new Funcionario("William Ludwig", "willudwig", "1234");
+            SqlDelete();
+            InstanciaObjeto();
+            InstanciaRepositorio();
+        }
+
+        private void InstanciaRepositorio()
+        {
             repositorio = new RepositorioFuncionarioEmBancoDados();
+        }
+
+        private void InstanciaObjeto()
+        {
+            funcionario = new Funcionario("William Ludwig", "willudwig", "1234");
+        }
+
+        private static void SqlDelete()
+        {
+            Db.ExecutarSql("DELETE FROM TBFUNCIONARIO; DBCC CHECKIDENT (TBFUNCIONARIO, RESEED, 0)");
         }
 
         [TestMethod]

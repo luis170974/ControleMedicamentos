@@ -23,13 +23,23 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloMedicamento
 
         public RepositorioMedicamentoEmBancoDadosTest()
         {
-            Db.ExecutarSql("DELETE FROM TBMEDICAMENTO; DBCC CHECKIDENT (TBMEDICAMENTO, RESEED, 0)");
-            Db.ExecutarSql("DELETE FROM TBFORNECEDOR; DBCC CHECKIDENT (TBFORNECEDOR, RESEED, 0)");
+            SqlDelete();
 
-            fornecedor = new Fornecedor("Luis", "49998319930", "luishenriquekraus@hotmail.com", "Otacilio Costa", "SC");
+            InstanciaObjetos();
 
-            medicamento = new Medicamento("Ibuprofeno", "Remedio Pra dor De cabeça", "2022", Convert.ToDateTime("10/05/2022"));        
+            MedicamentoRecebeOsObjetos();
 
+            InstanciaRepositorio();
+        }
+
+        private void InstanciaRepositorio()
+        {
+            repositorio = new RepositorioMedicamentoEmBancoDados();
+            repositorioFornecedor = new RepositorioFornecedorEmBancoDados();
+        }
+
+        private void MedicamentoRecebeOsObjetos()
+        {
             medicamento.Fornecedor = fornecedor;
 
             medicamento.Fornecedor.Id = 1;
@@ -37,11 +47,19 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloMedicamento
             medicamento.Id = 1;
 
             medicamento.QuantidadeDisponivel = 10;
+        }
 
+        private void InstanciaObjetos()
+        {
+            fornecedor = new Fornecedor("Luis", "49998319930", "luishenriquekraus@hotmail.com", "Otacilio Costa", "SC");
 
+            medicamento = new Medicamento("Ibuprofeno", "Remedio Pra dor De cabeça", "2022", Convert.ToDateTime("10/05/2022"));
+        }
 
-            repositorio = new RepositorioMedicamentoEmBancoDados();
-            repositorioFornecedor = new RepositorioFornecedorEmBancoDados();
+        private static void SqlDelete()
+        {
+            Db.ExecutarSql("DELETE FROM TBMEDICAMENTO; DBCC CHECKIDENT (TBMEDICAMENTO, RESEED, 0)");
+            Db.ExecutarSql("DELETE FROM TBFORNECEDOR; DBCC CHECKIDENT (TBFORNECEDOR, RESEED, 0)");
         }
 
         [TestMethod]

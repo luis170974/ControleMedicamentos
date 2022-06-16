@@ -20,9 +20,24 @@ namespace ControleMedicamento.Infra.BancoDados.Tests.ModuloFornecedor
 
         public RepositorioFornecedorEmBancoDadosTest()
         {
-            Db.ExecutarSql("DELETE FROM TBFORNECEDOR; DBCC CHECKIDENT (TBFORNECEDOR, RESEED, 0)");
-            fornecedor = new Fornecedor("Luis","49998319930","luishenriquekraus@hotmail.com","Otacilio Costa","SC");
+            SqlDelete();
+            InstanciandoObjeto();
+            InstanciandoRepositorio();
+        }
+
+        private void InstanciandoRepositorio()
+        {
             repositorio = new RepositorioFornecedorEmBancoDados();
+        }
+
+        private void InstanciandoObjeto()
+        {
+            fornecedor = new Fornecedor("Luis", "49998319930", "luishenriquekraus@hotmail.com", "Otacilio Costa", "SC");
+        }
+
+        private static void SqlDelete()
+        {
+            Db.ExecutarSql("DELETE FROM TBFORNECEDOR; DBCC CHECKIDENT (TBFORNECEDOR, RESEED, 0)");
         }
 
         [TestMethod]
